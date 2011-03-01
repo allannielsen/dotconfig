@@ -1,0 +1,30 @@
+URxvt.cutchars: "()*,<>[]{}|'
+URxvt.print-pipe: cat >/tmp/xxx
+
+URxvt.foreground:  grey90
+URxvt.background:  rgba:0000/0000/0000/dddd
+URxvt.tintColor:   #444444
+URxvt.cursorColor: red
+URxvt.modifier:    super
+#URxvt.background:       black
+#URxvt.foreground:       green
+URxvt.underlineColor:   yellow
+URxvt.saveLines:        100000
+
+URxvt.visualBell:       true
+URxvt.scrollBar:        false
+URxvt.loginShell:       true
+URxvt.depth:            32
+
+#URxvt.font: xft:Bitstream Vera Sans Mono:antialias=true:size=10
+URxvt.font:            xft:DejaVu Sans Mono:antialias=true:size=10
+URxvt.boldFont:        xft:DejaVu Sans Mono:bold:antialias=true:size=10
+URxvt.italicFont:      xft:DejaVu Sans Mono:italic:antialias=true:size=10
+URxvt.boldItalicFont:  xft:DejaVu Sans Mono:bold:italic:antialias=true:size=10
+
+#URxvt.font:            xft:Bitstream Vera Sans Mono:antialias=false:size=10
+#URxvt.boldFont:        xft:Bitstream Vera Sans Mono:antialias=false:bold:size=10
+#URxvt.italicFont:      xft:Bitstream Vera Sans Mono:antialias=false:italic:size=10
+#URxvt.boldItalicFont:  xft:Bitstream Vera Sans Mono:antialias=false:bold:italic:size=10
+
+
