@@ -1,0 +1,34 @@
+alias svnupdry='svn merge --dry-run -r BASE:HEAD .'
+alias du_sorted="du -abx | sort -n | gawk '{if(match(\$0, /^([[:digit:]]+)[\\t ]+(.+)/, a)){ s = int(a[1]); n = a[2]; u = \"B \"; if(s >= 1024){s = s/1024; u = \"KB\";} if(s >= 1024){s = s/1024; u = \"MB\";} if(s >= 1024){s = s/1024; u = \"GB\";} if(s >= 1024){s = s/1024; u = \"TB\";} printf(\"%8.2f%s %s\\n\", s, u, n)}}'"
+alias cmus="TERM=rxvt cmus"
+alias metaflac_various='metaflac --remove-tag=COMPILATION *.flac; metaflac --remove-tag="ALBUM ARTIST" *.flac; metaflac --set-tag="COMPILATION=1" *.flac'
+
+alias vd='vim -d -R -'
+alias vo='vim -R -'
+
+alias grepr='grep -n -r -s --exclude-dir=bin --exclude=cscope.out --exclude=tags --exclude-dir=.svn --exclude-dir=.git --exclude-dir=patches --exclude-dir=build'
+
+alias g=git
+
+alias pst="ps -AfH f"
+alias pstl="ps -fH f -u `id -u`"
+alias lsofi="lsof -i -n -P"
+
+alias play_allegro='mplayer "http://wmscr2.dr.dk/e06ch03m?wmcontentbitrate=300000"'
+alias play_barometer='mplayer "http://wmscr2.dr.dk/e02ch09m?wmcontentbitrate=300000"'
+alias play_boogie='mplayer "http://wmscr2.dr.dk/e02ch07m?wmcontentbitrate=300000"'
+alias play_dansktop='mplayer "http://wmscr2.dr.dk/e02ch11m?wmcontentbitrate=300000"'
+alias play_electronica='mplayer "http://wmscr2.dr.dk/e06ch10m?wmcontentbitrate=300000"'
+alias play_evergreen='mplayer "http://wmscr2.dr.dk/e06ch07m?wmcontentbitrate=300000"'
+alias play_hit='mplayer "http://wmscr2.dr.dk/e04ch10m?wmcontentbitrate=300000"'
+alias play_jazz='mplayer "http://wmscr2.dr.dk/e02ch05m?wmcontentbitrate=300000"'
+alias play_klassisk='mplayer "http://wmscr2.dr.dk/e02ch06m?wmcontentbitrate=300000"'
+alias play_oline='mplayer "http://wmscr2.dr.dk/e04ch12m?wmcontentbitrate=300000"'
+alias play_p1='mplayer "http://wmscr2.dr.dk/e02ch01m?wmcontentbitrate=300000"'
+alias play_p2='mplayer "http://wmscr2.dr.dk/e02ch02m?wmcontentbitrate=300000"'
+alias play_p3='mplayer "http://wmscr2.dr.dk/e02ch03m?wmcontentbitrate=300000"'
+alias play_p5000='mplayer "http://wmscr2.dr.dk/e08ch02m?wmcontentbitrate=300000"'
+alias play_p5='mplayer "http://wmscr2.dr.dk/e06ch01m?wmcontentbitrate=300000"'
+alias play_rock='mplayer "http://wmscr2.dr.dk/e02ch04m?wmcontentbitrate=300000"'
+alias play_soft='mplayer "http://wmscr2.dr.dk/e06ch05m?wmcontentbitrate=300000"'
+alias play_world='mplayer "http://wmscr2.dr.dk/e06ch12m?wmcontentbitrate=300000"'

@@ -1,0 +1,81 @@
+[user]
+        name       = Allan W. Nielsen
+        email      = a@awn.dk
+
+[core]
+#       gitProxy = git-http-proxy
+#        gitProxy = "~/bin/git-http-proxy" for repo.or.cz
+#        gitProxy = "~/bin/git-http-proxy" for source.winehq.org
+
+[color]
+        diff = auto
+        status = auto
+        branch = auto
+        interactive = auto
+
+[diff]
+        renames = copy
+
+[branch]
+        autosetupmerge = true
+
+[clean]
+        requireForce = true
+
+[gc]
+        auto = 0
+        autopacklimit = 0
+        packrefs = false
+
+[apply]
+        whitespace = strip
+
+[mergetool "twoway"]
+        cmd = cp $LOCAL $MERGED && /usr/bin/vimdiff $MERGED $REMOTE
+
+[merge]
+        tool = twoway
+
+[sendmail]
+        smtpserver     = ssl.awn.dk
+        smtpuser       = allan@awn.dk
+        smtpencryption = tls
+
+[alias]
+        ai = add -i
+        di = diff -p --stat
+        cdi = diff -p --stat --cached
+        hdi = diff HEAD -p --stat
+        edi = !GIT_EXTERNAL_DIFF=~/scripts/diff_arg_wrap.sh git --no-pager diff
+        ds = diff --stat
+        cds = diff --cached --stat
+        hds = diff HEAD --stat
+        ci = commit
+        co = checkout
+        br = branch
+        ru = remote update
+        st = !git --no-pager status
+        stat = status
+        shs = show -p --stat
+        sh = show -p --stat --pretty=fuller
+        l = log
+        lo = log --pretty=oneline
+        ami3 = am -i -3 --signoff
+        am3 = am -3 --signoff
+        fpstd = format-patch --signoff --stdout
+        pr = pull --rebase
+        wc = whatchanged -p --stat
+        wcy = whatchanged -p --stat --since='yesterday'
+        wcw = whatchanged -p --stat --since='1 weeks ago'
+        wcf = whatchanged -p --stat --pretty=fuller
+        wcyf = whatchanged -p --stat --pretty=fuller --since='yesterday'
+        wcwf = whatchanged -p --stat --pretty=fuller --since='1 weeks ago'
+        wcs = whatchanged --stat
+        wcys = whatchanged --stat --since='yesterday'
+        wcws = whatchanged --stat --since='1 weeks ago'
+        chp = cherry-pick
+        chpx = cherry-pick -x
+        fps = format-patch -s
+        sb = show-branch
+        mail = send-email --compose
+
