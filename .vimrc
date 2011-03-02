@@ -17,22 +17,19 @@ set isk+=_,- " none of these should be word dividers, so make them not be
 "   Files/Backups
 " =========================
 "
-  set nobackup " no backups
+" set nobackup " no backups
 " set backup " make backup file
 " set backupdir=$VIM\vimfiles\backup " where to put backup file
 " set directory=$VIM\vimfiles\temp " directory is the directory for temp file
 "
 " Enable a nice big viminfo file
-  set   viminfo='1000,f1,:1000,/1000
-  set   history=1000 " How many lines of history to remember
+  set   viminfo='100000,f1,:100000,/100000
+  set   history=100000 " How many lines of history to remember
 "
 "       autowrite: Automatically save modifications to files
 "       when you use critical (rxternal) commands.
 " set   autowrite
 
-
-colorscheme evening
-set guioptions=
 
 " =========================
 "   Vim UI
@@ -103,6 +100,7 @@ endif
   set   statusline+=%-3.3n\                      " buffer number
   set   statusline+=%F\                          " file name
   set   statusline+=%h%m%r%w                     " flags
+  set   statusline+=%{fugitive#statusline()}
   set   statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
   set   statusline+=%{&fileencoding}/%{&encoding}/%{&termencoding}, " encoding
   set   statusline+=%{&fileformat}]              " file format
@@ -115,6 +113,7 @@ endif
   set   statusline+=%=                           " right align
   set   statusline+=0x%-8B\                      " current char
   set   statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
+
 
 " If possible, try to use a narrow number column.
 if v:version >= 700
@@ -228,19 +227,7 @@ endif
 "
 " 1 height windows
   set winminheight=1
-"
-"
-" No icky toolbar, menu or scrollbars in the GUI
-if has('gui')
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=l
-    set guioptions-=L
-    set guioptions-=r
-    set guioptions-=R
-else
 
-end
 
 inoremap # X<BS>#
 
@@ -284,6 +271,13 @@ set fillchars=fold:-
 "   Plugin / Script / App Settings
 " ==================================
 
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
+colorscheme evening
+set guioptions=
+
+
 " Enable syntax highlighting
 syntax on
 
@@ -295,13 +289,6 @@ filetype indent on
 " Highlight C space errors.
 let c_space_errors = 1
 set makeef=error.err " When using make, where should it dump the file
-"let c_no_tab_space_error = 1
-
-" supertab
-"let g:SuperTabDefaultCompletionType = "<C-X><C-N>"
-"let g:SuperTabContextDefaultCompletionType = "<C-X><C-N>"
-"let g:SuperTabDefaultCompletionTypeDiscovery = ["&omnifunc:<C-X><C-O>","&completefunc:<C-X><C-U>",]
-"let g:SuperTabMidWordCompletion = 0
 
 "CTAGS
 "let g:autotagCtagsCmd = "ctags --c++-kinds=+pl --fields=+iaS --extra=+q"
@@ -333,47 +320,6 @@ let g:git_diff_spawn_mode = 1
 let g:manpageview_winopen = "hsplit="
 let g:manpageview_multimanpage = 0
 
-" doxygen
-let g:DoxygenToolkit_authorName="Andreas Schneider"
-let g:DoxygenToolkit_licenseTag="GPL"
-let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
-let g:DoxygenToolkit_briefTag_funcName = "no"
-let g:DoxygenToolkit_commentType = "C"
-
-let g:DoxygenToolkit_briefTag_pre = " @brief "
-let g:DoxygenToolkit_briefTag_post = ""
-let g:DoxygenToolkit_paramTag_pre = " @param "
-let g:DoxygenToolkit_paramTag_post = " "
-let g:DoxygenToolkit_returnTag = " @return "
-let g:DoxygenToolkit_fileTag = " @file "
-let g:DoxygenToolkit_authorTag = " @author "
-let g:DoxygenToolkit_dateTag = " @date "
-let g:DoxygenToolkit_blockTag = " @name "
-let g:DoxygenToolkit_classTag = " @class "
-let g:DoxygenToolkit_startCommentTag = "/**"
-let g:DoxygenToolkit_startCommentBlock = "/*"
-let g:DoxygenToolkit_interCommentTag = "*"
-let g:DoxygenToolkit_endCommentTag = "*/"
-let g:DoxygenToolkit_endCommentBlock = " */"
-
-"  LaTeX commands
-"ia #l \documentclass{article}<CR>\usepackage[latin1]{inputenc}<CR>\usepackage[danish]{babel}<CR>\begin{document}<CR>\begin{center}<CR>{\bf}\\<CR>Jack Jørgensen 140682<CR>\end{center}<CR>\end{document}<Up><Up><Up><Left><Left><Left>
-"ia #e \begin{eqnarray*}<CR>\end{eqnarray*}<Up><End>
-"ia #f \frac{}{}<Left><Left><Left>
-"ia #v \verb
-"ia #( \left(
-"ia #) \right)
-"ia #[ \right[
-"ia #] \left]
-"ia #{ \left\{
-"ia #} \right\}
-"ia #a \left[\begin{array}{}<CR>\end{array}\right]<Up><End><Left>
-" Perl specific options
-let perl_include_pod=1
-let perl_fold=1
-let perl_fold_blocks=1
-let perl_extended_vars=1 
-
 " Vim specific options
 let g:vimsyntax_noerror=1
 
@@ -384,43 +330,6 @@ let g:miniBufExplWinFixHeight = 1
 
 " bash case indet level
 let g:sh_indent_case_labels=1
-
-" Settings for showmarks.vim
-if has("gui_running")
-    let g:showmarks_enable=1
-else
-    let g:showmarks_enable=0
-    let loaded_showmarks=1
-endif
-
-autocmd VimEnter *
-            \ if has('gui') |
-            \        highlight ShowMarksHLl gui=bold guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight ShowMarksHLu gui=none guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight ShowMarksHLo gui=none guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight ShowMarksHLm gui=none guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight SignColumn   gui=none guifg=#f0f0f8 guibg=#2e2e2e |
-            \    endif
-
-" Settings for explorer.vim
-" let g:explHideFiles='^\.'
-
-" Settings for netrw
-" let g:netrw_list_hide='^\.,\~$'
-
-" Settings for :TOhtml
-let html_number_lines=1
-let html_use_css=1
-let use_xhtml=1
-
-" markdown filetype file
-augroup markdown
-    au! BufRead,BufNewFile *.mkd   setfiletype mkd
-augroup END
-" Finally, to get some nice Markdown formatting behavior, add these lines to your .vimrc: 
-augroup mkd
-    autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
-augroup END
 
 
 set makeprg=cbuild
@@ -484,107 +393,5 @@ function FT_vhdl()
   "command! EVMUpdateSensitivityList :w|:execute "!emacs --no-init-file --no-site-file -l ~/.vhdl/vhdl-mode.el -batch % --eval '(vhdl-update-sensitivity-list-buffer)' -f save-buffer" | :e
   "map <F12> :EVMUpdateSensitivityList<CR>
 endfunction
-
-
-"
-" ===================================================================
-" ASCII tables - you may need them some day.  Save them to a file!
-" ===================================================================
-"
-" 001005: In need of an ASII table?  Perl is your friend:
-"         perl -e 'while($i++<256) { print chr($i); }'
-"
-" ASCII Table - | octal value - name/char |
-"
-" |000 nul|001 soh|002 stx|003 etx|004 eot|005 enq|006 ack|007 bel|
-" |010 bs |011 ht |012 nl |013 vt |014 np |015 cr |016 so |017 si |
-" |020 dle|021 dc1|022 dc2|023 dc3|024 dc4|025 nak|026 syn|027 etb|
-" |030 can|031 em |032 sub|033 esc|034 fs |035 gs |036 rs |037 us |
-" |040 sp |041  ! |042  " |043  # |044  $ |045  % |046  & |047  ' |
-" |050  ( |051  ) |052  * |053  + |054  , |055  - |056  . |057  / |
-" |060  0 |061  1 |062  2 |063  3 |064  4 |065  5 |066  6 |067  7 |
-" |070  8 |071  9 |072  : |073  ; |074  < |075  = |076  > |077  ? |
-" |100  @ |101  A |102  B |103  C |104  D |105  E |106  F |107  G |
-" |110  H |111  I |112  J |113  K |114  L |115  M |116  N |117  O |
-" |120  P |121  Q |122  R |123  S |124  T |125  U |126  V |127  W |
-" |130  X |131  Y |132  Z |133  [ |134  \ |135  ] |136  ^ |137  _ |
-" |140  ` |141  a |142  b |143  c |144  d |145  e |146  f |147  g |
-" |150  h |151  i |152  j |153  k |154  l |155  m |156  n |157  o |
-" |160  p |161  q |162  r |163  s |164  t |165  u |166  v |167  w |
-" |170  x |171  y |172  z |173  { |174  | |175  } |176  ~ |177 del|
-"
-" ===================================================================
-" ASCII Table - | decimal value - name/char |
-"
-" |000 nul|001 soh|002 stx|003 etx|004 eot|005 enq|006 ack|007 bel|
-" |008 bs |009 ht |010 nl |011 vt |012 np |013 cr |014 so |015 si |
-" |016 dle|017 dc1|018 dc2|019 dc3|020 dc4|021 nak|022 syn|023 etb|
-" |024 can|025 em |026 sub|027 esc|028 fs |029 gs |030 rs |031 us |
-" |032 sp |033  ! |034  " |035  # |036  $ |037  % |038  & |039  ' |
-" |040  ( |041  ) |042  * |043  + |044  , |045  - |046  . |047  / |
-" |048  0 |049  1 |050  2 |051  3 |052  4 |053  5 |054  6 |055  7 |
-" |056  8 |057  9 |058  : |059  ; |060  < |061  = |062  > |063  ? |
-" |064  @ |065  A |066  B |067  C |068  D |069  E |070  F |071  G |
-" |072  H |073  I |074  J |075  K |076  L |077  M |078  N |079  O |
-" |080  P |081  Q |082  R |083  S |084  T |085  U |086  V |087  W |
-" |088  X |089  Y |090  Z |091  [ |092  \ |093  ] |094  ^ |095  _ |
-" |096  ` |097  a |098  b |099  c |100  d |101  e |102  f |103  g |
-" |104  h |105  i |106  j |107  k |108  l |109  m |110  n |111  o |
-" |112  p |113  q |114  r |115  s |116  t |117  u |118  v |119  w |
-" |120  x |121  y |122  z |123  { |124  | |125  } |126  ~ |127 del|
-"
-" ===================================================================
-" ASCII Table - | hex value - name/char |
-"
-" | 00 nul| 01 soh| 02 stx| 03 etx| 04 eot| 05 enq| 06 ack| 07 bel|
-" | 08 bs | 09 ht | 0a nl | 0b vt | 0c np | 0d cr | 0e so | 0f si |
-" | 10 dle| 11 dc1| 12 dc2| 13 dc3| 14 dc4| 15 nak| 16 syn| 17 etb|
-" | 18 can| 19 em | 1a sub| 1b esc| 1c fs | 1d gs | 1e rs | 1f us |
-" | 20 sp | 21  ! | 22  " | 23  # | 24  $ | 25  % | 26  & | 27  ' |
-" | 28  ( | 29  ) | 2a  * | 2b  + | 2c  , | 2d  - | 2e  . | 2f  / |
-" | 30  0 | 31  1 | 32  2 | 33  3 | 34  4 | 35  5 | 36  6 | 37  7 |
-" | 38  8 | 39  9 | 3a  : | 3b  ; | 3c  < | 3d  = | 3e  > | 3f  ? |
-" | 40  @ | 41  A | 42  B | 43  C | 44  D | 45  E | 46  F | 47  G |
-" | 48  H | 49  I | 4a  J | 4b  K | 4c  L | 4d  M | 4e  N | 4f  O |
-" | 50  P | 51  Q | 52  R | 53  S | 54  T | 55  U | 56  V | 57  W |
-" | 58  X | 59  Y | 5a  Z | 5b  [ | 5c  \ | 5d  ] | 5e  ^ | 5f  _ |
-" | 60  ` | 61  a | 62  b | 63  c | 64  d | 65  e | 66  f | 67  g |
-" | 68  h | 69  i | 6a  j | 6b  k | 6c  l | 6d  m | 6e  n | 6f  o |
-" | 70  p | 71  q | 72  r | 73  s | 74  t | 75  u | 76  v | 77  w |
-" | 78  x | 79  y | 7a  z | 7b  { | 7c  | | 7d  } | 7e  ~ | 7f del|
-" ===================================================================
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Custom Functions
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Select range, then hit :SuperRetab($width) - by p0g and FallingCow
-"function! SuperRetab(width) range
-"        silent! exe a:firstline . ',' . a:lastline . 's/\v%(^ *)@<= {'. a:width .'}/\t/g'
-"endfunction
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"map <right> <ESC>:MBEbn<RETURN> " right arrow (normal mode) switches buffers  (excluding minibuf)
-"map <left> <ESC>:MBEbp<RETURN> " left arrow (normal mode) switches buffers (excluding minibuf) 
-"map <up> <ESC>:Sex<RETURN><ESC><C-W><C-W> " up arrow (normal mode) brings up a file list
-"map <down> <ESC>:Tlist<RETURN> " down arrow  (normal mode) brings up the tag list
-"map <A-i> i <ESC>r " alt-i (normal mode) inserts a single char, and then switches back to normal
-"map <F2> <ESC>ggVG:call SuperRetab()<left>
-"map <F12> ggVGg? " encypt the file (toggle)
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Autocommands
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"autocmd BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full)
-"au BufNewFile,BufRead *.asp :set ft=aspjscript " all my .asp files ARE jscript
-"au BufNewFile,BufRead *.tpl :set ft=html " all my .tpl files ARE html
-"au BufNewFile,BufRead *.hta :set ft=html " all my .tpl files ARE html
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Useful abbrevs
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"iab xasp <%@language=jscript%><CR><%<CR><TAB><CR><BS>%><ESC><<O<TAB>
-"iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 
 "       vim:tw=73 et sw=4 comments=\:\"
