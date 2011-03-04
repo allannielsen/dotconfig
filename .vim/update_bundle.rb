@@ -19,7 +19,11 @@ git_bundles = [
   "git://github.com/tsaleh/vim-supertab.git",
   "git://github.com/tsaleh/vim-tcomment.git",
   "git://github.com/vim-ruby/vim-ruby.git",
-  "http://github.com/bronson/vim-bufexplorer.git",
+  "https://github.com/mexpolk/vim-bufexplorer.git",
+  "https://github.com/shemerey/vim-manpageview.git",
+  "https://github.com/vim-scripts/AnsiEsc.vim.git",
+  "git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex",
+
 ]
 
 vim_org_scripts = [
