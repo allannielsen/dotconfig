@@ -36,10 +36,8 @@
 [merge]
         tool = twoway
 
-[sendmail]
-        smtpserver     = ssl.awn.dk
-        smtpuser       = allan@awn.dk
-        smtpencryption = tls
+[difftool.latex]
+          cmd = git-latexdiff "$LOCAL" "$REMOTE"
 
 [alias]
         ai = add -i
@@ -78,4 +76,13 @@
         fps = format-patch -s
         sb = show-branch
         mail = send-email --compose
+        ldiff = difftool -t latex
 
+[core]
+       excludesfile = /home/awn/.gitignore
+
+[sendemail]
+	smtpserver = smtp.googlemail.com
+	smtpserverport = 587
+	smtpencryption = tls
+	smtpuser = a@awn.dk
