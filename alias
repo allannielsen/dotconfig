@@ -10,6 +10,7 @@ alias grepr='grep -n -r -s --exclude-dir=bin --exclude=cscope.out --exclude=tags
 
 alias g=git
 
+alias ls="ls --color=tty"
 alias pst="ps -AfH f"
 alias pstl="ps -fH f -u `id -u`"
 alias lsofi="lsof -i -n -P"

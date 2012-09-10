@@ -16,11 +16,11 @@ if [ $HAVE_TTY -eq 1 ]; then
   for SHFILE in ${HOME}/.profile.d/*.sh; do
       if [ -f ${SHFILE} ]; then
           echo "Running: ${SHFILE}"
-          source ${SHFILE}
+          . ${SHFILE}
       fi
   done
 
   test -s ~/.alias && . ~/.alias || true
 fi
 
-
+#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
