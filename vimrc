@@ -3,14 +3,20 @@
 " =========================
 "
 " Extra terminal things
-if (($TERM == "rxvt-unicode") || ($TERM =~ "xterm") || ($TERM =~ "screen")) && (&termencoding == "")
+if (($TERM == "rxvt-unicode") || ($TERM =~ "xterm") || ($TERM =~ "screen") || ($TERM =~ "screen-it")) && (&termencoding == "")
     set termencoding=utf-8
 endif
+
+"if (&term == 'xterm' || &term =~? '^screen-it')
+"    " On my machine, I use Konsole with 256 color support
+"    set t_Co=256
+"    let g:CSApprox_konsole = 1
+"endif
 "
 "     compatible:  Let Vim behave like Vi?  Hell, no!
 set nocompatible
 set cf " enable error files and error jumping
-set isk+=_,- " none of these should be word dividers, so make them not be
+" set isk+=_,- " none of these should be word dividers, so make them not be
 
 
 " =========================
@@ -94,34 +100,6 @@ else
 endif
 "
 "
-" Nice statusbar
-  set   laststatus=2
-  set   statusline=
-  set   statusline+=%-3.3n\                      " buffer number
-  set   statusline+=%F\                          " file name
-  set   statusline+=%h%m%r%w                     " flags
-  set   statusline+=%{fugitive#statusline()}
-  set   statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
-  set   statusline+=%{&fileencoding}/%{&encoding}/%{&termencoding}, " encoding
-  set   statusline+=%{&fileformat}]              " file format
-  set   statusline+=[LEN=%L]                     " total length of file
-
-
-if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
-  set   statusline+=\ %{VimBuddy()}          " vim buddy
-endif
-  set   statusline+=%=                             " right align
-"  set   statusline+=style=%{CodingStyleIndent()}\  " show currently used style
-  set   statusline+=0x%-2B\                        " current char
-  set   statusline+=%-8.(%4l,%c%V%)\ %3P           " offset
-
-" If possible, try to use a narrow number column.
-if v:version >= 700
-    try
-        setlocal numberwidth=3
-    catch
-    endtry
-endif
 
 " =========================
 "   Visual Cues
@@ -165,7 +143,7 @@ set visualbell
 "       Use the cool tab complete menu
   set   wildmenu
   set   wildmode=list:longest,full
-  set   wildignore=*.o,*~
+  set   wildignore=*.o,*~,build/**
 
 " =========================
 "   Text Formatting/Layout
@@ -177,9 +155,9 @@ set visualbell
 "       smartindent: Do smart autoindenting when starting a new line.
 "       Works for C-like programs, but can also be used for other
 "       languages. cindent or smartindent
-set   smartindent
+" set   smartindent
 "
-"       cindent: do c-style indenting
+  "     cindent: do c-style indenting
   set   cindent
 "
 "       shiftwidth: Number of spaces to use for each insertion of
@@ -232,20 +210,19 @@ set   smarttab
 inoremap # X<BS>#
 
 " Enable folds
-let g:xml_syntax_folding = 1
-set foldenable
-""set foldmethod=indent " Make folding indent sensitive
-set foldmethod=syntax
-set foldlevel=1
-"set foldcolumn=12
-""set foldopen-=search " don't open folds when you search into them
-""set foldopen-=undo " don't open folds when you undo stuff
+"let g:xml_syntax_folding = 1
+"set foldenable
+"set foldmethod=indent " Make folding indent sensitive
+""set foldmethod=syntax
+"set foldlevel=1
+""set foldcolumn=12
+"""set foldopen-=search " don't open folds when you search into them
+"""set foldopen-=undo " don't open folds when you undo stuff
 
 " Syntax when printing
 set popt+=syntax:y
 
 
-"
 " Include $HOME in cdpath
 " let &cdpath=','.expand("$HOME")
 " 
@@ -274,10 +251,52 @@ set fillchars=fold:-
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
+
+
+
+" Nice statusbar
+  set   laststatus=2
+  set   statusline=
+  set   statusline+=%-3.3n\                      " buffer number
+  set   statusline+=%F\                          " file name
+  set   statusline+=%h%m%r%w                     " flags
+"  set   statusline+=%{fugitive#statusline()}
+  set   statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
+"  set   statusline+=%{&fileencoding}/%{&encoding}/%{&termencoding}, " encoding
+"  set   statusline+=%{&fileformat}]              " file format
+  set   statusline+=[LEN=%L]                     " total length of file
+  set   statusline+=style=%{CodingStyleIndent()}
+
+
+if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
+  set   statusline+=\ %{VimBuddy()}          " vim buddy
+endif
+  set   statusline+=%=                             " right align
+"  set   statusline+=style=%{CodingStyleIndent()}\  " show currently used style
+  set   statusline+=0x%-2B\                        " current char
+  set   statusline+=%-8.(%4l,%c%V%)\ %3P           " offset
+
+" If possible, try to use a narrow number column.
+if v:version >= 700
+    try
+        setlocal numberwidth=3
+    catch
+    endtry
+endif
+
+
+
+
+
+
+
+
+
+
 colorscheme evening
 set guioptions=
-
-
+   
+   
 " Enable syntax highlighting
 syntax on
 
@@ -289,7 +308,7 @@ filetype indent on
 " Highlight C space errors.
 let c_space_errors = 1
 set makeef=error.err " When using make, where should it dump the file
-" 
+ 
 " "CTAGS
 " "let g:autotagCtagsCmd = "ctags --c++-kinds=+pl --fields=+iaS --extra=+q"
 " set tags+=~/.vim/tags/cpp
@@ -511,18 +530,26 @@ function! QtCppIndent()
 endfunc
 "set indentexpr=QtCppIndent()
 
+
+let g:CommandTMaxFiles=1000000
+let g:CommandTMaxDepth=1000
+
 "set colorcolumn=81
 
-function! MarkLongLines()
-    highlight OverLength ctermbg=darkred ctermfg=white guibg=darkred
-"    "let w:m2=matchadd("OverLength", printf('\%%>%dv.\+', &textwidth), -1)
-    let w:m2=matchadd("OverLength", "\\%72v.*", -1)
-    let w:created=1
-endfunc
-
-"autocmd WinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
-"autocmd BufWinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
+" function! MarkLongLines()
+"     highlight OverLength ctermbg=darkred ctermfg=white guibg=darkred
+" "    "let w:m2=matchadd("OverLength", printf('\%%>%dv.\+', &textwidth), -1)
+"     let w:m2=matchadd("OverLength", "\\%72v.*", -1)
+"     let w:created=1
+" endfunc
+" 
+" autocmd WinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
+" autocmd BufWinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
 
 "autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
+
+" use gid for grepping
+set grepprg=gid
+set grepformat=%f:%l:%m
 
 "vim:tw=73 et sw=4 comments=\:\"

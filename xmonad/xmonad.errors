@@ -1,4 +1,0 @@
-
-xmonad.hs:23:17:
-    Could not find module `XMonad.StackSet':
-      it is not a module in the current program, or in any known package.
