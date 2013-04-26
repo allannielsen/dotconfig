@@ -111,7 +111,7 @@ if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
   set   statusline+=\ %{VimBuddy()}          " vim buddy
 endif
   set   statusline+=%=                             " right align
-  set   statusline+=style=%{CodingStyleIndent()}\  " show currently used style
+"  set   statusline+=style=%{CodingStyleIndent()}\  " show currently used style
   set   statusline+=0x%-2B\                        " current char
   set   statusline+=%-8.(%4l,%c%V%)\ %3P           " offset
 
@@ -520,8 +520,8 @@ function! MarkLongLines()
     let w:created=1
 endfunc
 
-autocmd WinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
-autocmd BufWinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
+"autocmd WinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
+"autocmd BufWinEnter *.{c,cc,cxx,cpp,h,hh,hpp,hxx} if !exists('w:created') | call MarkLongLines() | endif
 
 "autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
 
