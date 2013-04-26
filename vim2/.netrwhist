@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/storage/awn/games/paradise/engine/src/policy/dice_game/graph_types'
-let g:netrw_dirhist_2='/storage/awn/games/paradise/engine/src/policy/compressed_enums'
-let g:netrw_dirhist_3='/storage/awn/games/paradise/engine/src/policy/compressed_enums/include/compressed_enums'
-let g:netrw_dirhist_4='/storage/awn/games/paradise/engine/src/policy/compressed_enums'
-let g:netrw_dirhist_5='/storage/awn/games/paradise/engine/src/policy/compressed_enums/include/compressed_enums'
-let g:netrw_dirhist_6='/home/awn/.terminfo'
