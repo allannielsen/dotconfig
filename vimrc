@@ -1,10 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Loading u-pathogen
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set runtimepath+=$HOME/.vim/bundle/vim-pathogen/
-runtime autoload/pathogen.vim
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+execute pathogen#infect()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basic Settings
@@ -31,6 +28,7 @@ set cmdheight=1     " The command bar high
 set number          " Turn on line numbers
 set lazyredraw      " Do not redraw while running macros (much faster)
 set conceallevel=2  " Enable Wrapping characters
+set concealcursor=vin
 set scrolloff=3     " Scroll before the curser reaches top or buttom
 set sidescrolloff=2 " Scroll before the curser reaches left or right side
 set textwidth=80    " Set the line width to 80 characters
@@ -46,6 +44,12 @@ if has("multi_byte")
     set lcs=tab:\»\ ,trail:•,extends:>,precedes:<,nbsp:¤" " Show white spaces
     let &sbr = nr2char(8618).' '
     set list        " Turn on the display of whitespace
+endif
+
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
+  endif
 endif
 
 
@@ -79,6 +83,8 @@ set expandtab       " Expand Tabs (use spaces)?.
 set formatoptions=tcrqn " See Help (complex)
 set linebreak       " Insert automatic line breaks while typing
 set nowrap          " No wrap while displaying long lines
+set cinoptions=h2,l2,g2,t0,i8,+8,(0,w1,W8,N-s
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -94,30 +100,55 @@ set undofile               " Set the file name to undo - automatically
 set undolevels=1024        " The number of changes that can be returned
 set undoreload=65538       " The maximum number of lines that can be saved in the undo buffer RELOADE
 
+" Snippets
+let g:UltiSnipsNoPythonWarning = 1
+let g:UltiSnipsUsePythonVersion = 2
+let g:UltiSnipsSnippetsDir="~/.vim/bundle/ultisnips/UltiSnips"
+let g:UltiSnipsEditSplit="horizontal"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Autocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"let g:clang_snippets=1
+"let g:clang_conceal_snippets=1
 let g:clang_use_library=1
-let g:clang_library_path="/usr/lib"
-let g:clang_snippets=1
-let g:clang_snippets_engine='ultisnips'
-let g:clang_conceal_snippets=1
+let g:clang_library_path="/usr/lib64"
+let g:clang_user_options = '-std=c++11'
+"let g:clang_auto_user_options="compile_commands.json"
 let g:clang_hl_errors=1
 let g:clang_complete_copen=1
+let g:clang_snippets_engine='clang_complete'
 
 let g:clang_periodic_quickfix=0
 map <F5> :call g:ClangUpdateQuickFix()<CR>
 
+let g:clang_format#code_style = "google"
+let g:clang_format#auto_format_on_insert_leave = 0
+let g:clang_format#auto_formatexpr  = 0
+let g:clang_format#style_options = {
+            \ "AccessModifierOffset"     : -2,
+            \ "MaxEmptyLinesToKeep"      :  3,
+            \ "ContinuationIndentWidth"  :  8,
+            \ "IndentCaseLabels"         : "false",
+            \ "Standard" : "C++11" }
+
+map <F4> :ClangFormat<CR>
+
+
+
+" Limit popup menu height
+set pumheight=20
+
+"set completeopt=menuone,menu
 set completeopt=menuone,menu,preview
-"set completeopt=menuone,menu,preview
 "               |       |    |
 "               |       |    + Uses the preview window
 "               |       + Show popup menu for complementarity
 "               + View menu even if only one match
 
 " Auto close the preview pane by moving the cursor
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 " Topping up by pressing Ctrl + Space
 imap <C-Space> <C-X><C-I>
@@ -136,10 +167,36 @@ let g:Powerline_colorscheme="default"
 " View mini buffer explorer
 map <silent> <F3> :call BufferList()<CR>
 
+
+" use gid for grepping
+set grepprg=gid
+set grepformat=%f:%l:%m
+
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
+let g:DoxygenToolkit_briefTag_pre="\\brief "
+let g:DoxygenToolkit_paramTag_pre="\\param "
+let g:DoxygenToolkit_returnTag="\\return "
+let g:DoxygenToolkit_authorName="Allan W. Nielsen"
+let g:DoxygenToolkit_compactOneLineDoc="yes"
+let g:DoxygenToolkit_compactDoc="yes"
+
+autocmd BufEnter * :syntax sync minlines=1000
+
+au! BufEnter */vtss_basics/src/*.cxx                       let b:fswitchdst = 'hxx' | let b:fswitchlocs = 'reg:|src|include/vtss/basics|'
+au! BufEnter */vtss_basics/src/*/*.cxx                     let b:fswitchdst = 'hxx' | let b:fswitchlocs = 'reg:|src|include/vtss/basics|'
+au! BufEnter */vtss_basics/src/*/*/*.cxx                   let b:fswitchdst = 'hxx' | let b:fswitchlocs = 'reg:|src|include/vtss/basics|'
+au! BufEnter */vtss_basics/src/*/*/*/*.cxx                 let b:fswitchdst = 'hxx' | let b:fswitchlocs = 'reg:|src|include/vtss/basics|'
+au! BufEnter */vtss_basics/include/vtss/basics/*.hxx       let b:fswitchdst = 'cxx' | let b:fswitchlocs = 'reg:/include.vtss.basics/src/'
+au! BufEnter */vtss_basics/include/vtss/basics/*/*.hxx     let b:fswitchdst = 'cxx' | let b:fswitchlocs = 'reg:/include.vtss.basics/src/'
+au! BufEnter */vtss_basics/include/vtss/basics/*/*/*.hxx   let b:fswitchdst = 'cxx' | let b:fswitchlocs = 'reg:/include.vtss.basics/src/'
+au! BufEnter */vtss_basics/include/vtss/basics/*/*/*/*.hxx let b:fswitchdst = 'cxx' | let b:fswitchlocs = 'reg:/include.vtss.basics/src/'
+
 " The transition to alternative buffer (eg, from the header file to cpp and vice versa)
-map <F12> :A<CR>
-imap <F12> <ESC>:A<CR>
+map <F12> :FSHere<CR>
+imap <F12> <ESC>:FSHere<CR>
 
 
-
-
+let g:tex_conceal = ""
