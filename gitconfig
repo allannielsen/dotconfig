@@ -86,3 +86,5 @@
 	smtpserverport = 587
 	smtpencryption = tls
 	smtpuser = a@awn.dk
+[push]
+	default = simple

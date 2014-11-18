@@ -25,3 +25,21 @@
 [submodule "vim/bundle/errormarker"]
 	path = vim/bundle/errormarker
 	url = git://github.com/vim-scripts/errormarker.vim.git
+[submodule "vim/bundle/clang_complete"]
+	path = vim/bundle/clang_complete
+	url = https://github.com/Rip-Rip/clang_complete
+[submodule "vim/bundle/Command-T"]
+	path = vim/bundle/Command-T
+	url = https://github.com/wincent/Command-T.git
+[submodule "vim/bundle/fswitch"]
+	path = vim/bundle/fswitch
+	url = https://github.com/vim-scripts/FSwitch
+[submodule "vim/bundle/vcscommand"]
+	path = vim/bundle/vcscommand
+	url = git://repo.or.cz/vcscommand
+[submodule "vim/bundle/vim-clang-format"]
+	path = vim/bundle/vim-clang-format
+	url = https://github.com/rhysd/vim-clang-format
+[submodule "vim/bundle/vim-ruby"]
+	path = vim/bundle/vim-ruby
+	url = https://github.com/vim-ruby/vim-ruby
