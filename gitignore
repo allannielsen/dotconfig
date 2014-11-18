@@ -15,5 +15,6 @@ tags
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
-build
 .build*
+compile_commands.json
+ID

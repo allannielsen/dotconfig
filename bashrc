@@ -23,4 +23,3 @@ if [ $HAVE_TTY -eq 1 ]; then
   test -s ~/.alias && . ~/.alias || true
 fi
 
-#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

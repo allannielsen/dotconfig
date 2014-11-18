@@ -24,4 +24,12 @@ if [ "${TERM}" == "rxvt-unicode" ]; then
   printf "\33]701;$LC_CTYPE\007"
 fi
 
-PS1="\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]"
+hg_ps1() {
+    hg prompt "({branch}) " 2> /dev/null
+}
+
+PS1="\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;32m\]\$(hg_ps1)\[\033[01;35m\]\$ \[\033[00m\]"
+
+export GTEST_COLOR=yes
+export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
+export PATH=$PATH:/opt/vtss-cross-ecos-mips32-24kec-v2/bin

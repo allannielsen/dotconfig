@@ -37,3 +37,12 @@ alias play_world="mplayer2 -cache 256 -ao pulse \"http://wmscr2.dr.dk/e06ch12m?w
 alias cmake_here="CC='cc_args.py gcc' CXX='cc_args.py g++' ccmake ."
 alias cmake_here_clang="CC='cc_args.py clang' CXX='cc_args.py clang++' ccmake ."
 alias cmake_clean="find -name CMakeFiles -or -name CTestTestfile.cmake -or -name cmake_install.cmake -or -name install_manifest.txt -or -name CMakeCache.txt -or -name InstallFiles -or -name Makefile| xargs rm -rf"
+
+alias m="make CCACHE=1 -j6 && cp obj/./*.dat /tftpboot/anielsen/. && cp obj/./*.dat /tftpboot/anielsen/img"
+alias mm="make CCACHE=1 -C obj/ecos && make CCACHE=1 -j6 && cp obj/./*.dat /tftpboot/anielsen/. && cp obj/./*.dat /tftpboot/anielsen/img"
+
+alias openocd_serval="sudo openocd -f interface/ftdi/flyswatter2.cfg -f vtss/serval1-ref.cfg"
+
+alias go36="hg checkout branch-estax-rel-3_60_mass"
+alias go34="hg checkout branch-estax-3_40"
+alias golinstax="hg checkout branch-linstax"
