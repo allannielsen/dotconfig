@@ -1,36 +1,15 @@
 "*****************************************************************************
 "" Vim-PLug core
 "*****************************************************************************
-if has('vim_starting')
-  set nocompatible               " Be iMproved
-endif
 
-let vimplug_exists=expand('~/.vim/autoload/plug.vim')
-
-let g:vim_bootstrap_langs = "c,perl,ruby"
-let g:vim_bootstrap_editor = "vim" " nvim or vim
-
-if !filereadable(vimplug_exists)
-  echo "Installing Vim-Plug..."
-  echo ""
-  silent !\curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  let g:not_finish_vimplug = "yes"
-
-  autocmd VimEnter * PlugInstall
-endif
-
-" Required:
 call plug#begin('~/.vim/plugged')
-Plug 'vim-scripts/tlib'            " Utility library
+" Plug 'vim-scripts/tlib'            " Utility library
 Plug 'tpope/vim-sensible'          " Basic vim settings
 Plug 'godlygeek/csapprox'          " Fixes color schema
 "Plug 'flazz/vim-colorschemes'      " Lots of color schems
 "Plug 'rakr/vim-one'
 "Plug 'nightsense/vimspectr'
 "Plug 'felixhummel/setcolors.vim'   " Easy browsing of color schema
-"
-"Plug 'SirVer/ultisnips'            " Snippet engine
-"Plug 'honza/vim-snippets'
 "
 "Plug 'vim-ruby/vim-ruby'           " Better ruby support
 "Plug 'rhysd/vim-clang-format'      " Clang format
@@ -39,7 +18,13 @@ Plug 'vim-scripts/csindent.vim'    " Project specific settings
 Plug 'vim-scripts/FSwitch'         " Easy switching between header and c files
 Plug 'vim-scripts/highlight.vim'   " Highlight lines
 
+" Used by LSP
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/echodoc.vim'
+
 " Plug 'cloudhead/neovim-fuzzy'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " Plug 'asciidoc/vim-asciidoc'
 Plug 'vim-scripts/SyntaxRange'
@@ -56,26 +41,6 @@ Plug 'tpope/vim-characterize'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'     " Fancy status line, must come after fugitive
 
-" Plug 'neomutt/neomutt.vim'
-
-
-"Plug 'altercation/vim-colors-solarized'
-"Plug 'endel/vim-github-colorscheme'
-"Plug 'morhetz/gruvbox'
-"Plug 'NLKNguyen/papercolor-theme'
-
-
-
-"let g:make = 'gmake'
-"if exists('make')
-"        let g:make = 'make'
-"endif
-"Plug 'Shougo/vimproc.vim', {'do': g:make}
-"
-"if v:version >= 703
-"  Plug 'Shougo/vimshell.vim'
-"endif
-
 call plug#end()
 
 " Basic Settings
@@ -89,6 +54,8 @@ set textwidth=80    " Set the line width to 80 characters
 autocmd FileType c,cpp setlocal colorcolumn=80  " Setting highlight long lines
 set hidden          " Allow edit buffers to be hidden
 set guioptions=     " Remove menus
+set mouse=          " Let the console work as a console without mouse support
+
 
 colorscheme evening " This is a nice color scheame
 "colorscheme github
@@ -99,11 +66,6 @@ if empty($BG)
 else
     set bg=$BG
 endif
-
-"let g:gruvbox_contrast_dark='hard'
-"let g:gruvbox_contrast_light='hard'
-"colorscheme gruvbox
-"colorscheme PaperColor
 
 if has("multi_byte")
     set fillchars=stl:\ ,stlnc:\ ,vert:┆,fold:-,diff:-    " Displaying symbols to separate windows
@@ -167,56 +129,27 @@ let g:Powerline_theme="default"
 let g:Powerline_colorscheme="default"
 let g:airline_powerline_fonts = 1
 
-" use gid for grepping
-set grepprg=gid
-set grepformat=%f:%l:%m
-
-autocmd BufEnter * :syntax sync minlines=1000
-
-" The transition to alternative buffer (eg, from the header file to cpp and vice versa)
-map <F12> :FSHere<CR>
-imap <F12> <ESC>:FSHere<CR>
-
-if ! has('gui_running')
-    set ttimeoutlen=10
-    augroup FastEscape
-        autocmd!
-        au InsertEnter * set timeoutlen=0
-        au InsertLeave * set timeoutlen=1000
-    augroup END
-endif
-
-set diffexpr=MyDiff()
-function MyDiff()
-   let opt = ""
-   if &diffopt =~ "icase"
-     let opt = opt . "-i "
-   endif
-   if &diffopt =~ "iwhite"
-     let opt = opt . "-b "
-   endif
-   silent execute "!diff -d -a --binary " . opt . v:fname_in . " " . v:fname_new .
-        \  " > " . v:fname_out
-endfunction
-
-let g:xml_syntax_folding=1
-au FileType xml setlocal foldmethod=syntax
-
-" To map <Esc> to exit terminal-mode:
-tnoremap <Esc> <C-\><C-n>
-
-" To use `ALT+{h,j,k,l}` to navigate windows from any mode:
-tnoremap <A-h> <C-\><C-N><C-w>h
-tnoremap <A-j> <C-\><C-N><C-w>j
-tnoremap <A-k> <C-\><C-N><C-w>k
-tnoremap <A-l> <C-\><C-N><C-w>l
-inoremap <A-h> <C-\><C-N><C-w>h
-inoremap <A-j> <C-\><C-N><C-w>j
-inoremap <A-k> <C-\><C-N><C-w>k
-inoremap <A-l> <C-\><C-N><C-w>l
-nnoremap <A-h> <C-w>h
-nnoremap <A-j> <C-w>j
-nnoremap <A-k> <C-w>k
-nnoremap <A-l> <C-w>l
-
 nnoremap <C-p> :FuzzyOpen<CR>
+
+function SetLSPShortcuts()
+  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LSP
+  autocmd!
+  autocmd FileType cpp,c call SetLSPShortcuts()
+augroup END
+
+
+set cmdheight=2
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
